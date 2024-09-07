@@ -1,0 +1,1 @@
+docker-compose -p hadoop336 up

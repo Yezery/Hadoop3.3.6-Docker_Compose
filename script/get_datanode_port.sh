@@ -1,0 +1,1 @@
+docker ps --filter "name=datanode-*" --format "容器名称: {{.Names}}   相关端口: {{.Ports}}"

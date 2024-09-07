@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  namenode:
+    image: cjj2010/hadoop:3.3.6
+    ports: 
+        - "9870:9870"
+        - "8088:8088"
+    command: > 
+      bash -c "hdfs namenode & yarn resourcemanager "
+    hostname: hdfs-namenode
+
+  datanode:
+    image: cjj2010/hadoop:3.3.6
+    hostname: datanode
+    depends_on: 
+        - namenode
+    command: >
+      bash -c "hdfs datanode & yarn nodemanager "
+    ports:
+    # 主机端口由Docker随机分配，以允许扩展到同一主机上的多个DataNode
+      - "9864"
+    links:
+        - namenode:hdfs-namenode
+
+  secondarynamenode:
+    image: cjj2010/hadoop:3.3.6
+    command: hdfs secondarynamenode
+    ports:
+        - "9868:9868"
+    links:
+        - namenode:hdfs-namenode
